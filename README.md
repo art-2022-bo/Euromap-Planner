@@ -1,46 +1,50 @@
 # Backend and Frontend Template
 
-Latest version: https://git.chalmers.se/courses/dit342/group-00-web
+## Google Maps API Key
 
-This template refers to itself as `group-00-web`. In your project, use your group number in place of `00`.
+This project uses the Google Maps API. For security, the key has been removed from the repository. 
+To run the project locally, create a `.env` file in the root folder and add:
+
+GOOGLE_MAPS_API_KEY=YOUR_KEY_HERE
+
+
+---
 
 ## Project Structure
 
-| File        | Purpose           | What you do?  |
-| ------------- | ------------- | ----- |
-| `server/` | Backend server code | All your server code |
-| [server/README.md](server/README.md) | Everything about the server | **READ ME** carefully! |
-| `client/` | Frontend client code | All your client code |
-| [client/README.md](client/README.md) | Everything about the client | **READ ME** carefully! |
-| [docs/LOCAL_DEPLOYMENT.md](docs/LOCAL_DEPLOYMENT.md) | Local production deployment | Deploy your app local in production mode |
+| File | Purpose | Notes |
+|------|---------|-------|
+| `server/` | Backend server code | All your server logic |
+| [server/README.md](server/README.md) | Backend instructions | **READ ME carefully!** |
+| `client/` | Frontend client code | All UI code |
+| [client/README.md](client/README.md) | Frontend instructions | **READ ME carefully!** |
+| [docs/LOCAL_DEPLOYMENT.md](docs/LOCAL_DEPLOYMENT.md) | Local production deployment | Steps to deploy locally in production mode |
+
+---
 
 ## Requirements
 
-The version numbers in brackets indicate the tested versions but feel free to use more recent versions.
-You can also use alternative tools if you know how to configure them (e.g., Firefox instead of Chrome).
+- [Git](https://git-scm.com/) (tested with v2)  
+  - Set your username & email:
+    ```bash
+    git config --global user.name "YOUR_USERNAME"
+    git config --global user.email "email@example.com"
+    ```
+  - Windows: use [Git Bash](https://www.atlassian.com/git/tutorials/git-bash) or WSL  
+- [Chalmers GitLab](https://git.chalmers.se/) (login with Chalmers CID)  
+  - DIT342 course group: https://git.chalmers.se/courses/dit342  
+  - SSH setup: [GitLab SSH Keys](https://docs.gitlab.com/user/ssh/#generate-an-ssh-key-pair)
 
-* [Git](https://git-scm.com/) (v2) => [installation instructions](https://www.atlassian.com/git/tutorials/install-git)
-  * [Add your Git username and set your email](https://docs.github.com/en/get-started/git-basics/setting-your-username-in-git)
-    * `git config --global user.name "YOUR_USERNAME"` => check `git config --global user.name`
-    * `git config --global user.email "email@example.com"` => check `git config --global user.email`
-  * > **Windows users**: We recommend to use the [Git Bash](https://www.atlassian.com/git/tutorials/git-bash) shell from your Git installation or the Bash shell from the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) to run all shell commands for this project.
-* [Chalmers GitLab](https://git.chalmers.se/) => Login with your **Chalmers CID** choosing "Sign in with" **Chalmers Login**. (contact [support@chalmers.se](mailto:support@chalmers.se) if you don't have one)
-  * DIT342 course group: https://git.chalmers.se/courses/dit342
-  * [Setup SSH key with Gitlab](https://docs.gitlab.com/user/ssh/#generate-an-ssh-key-pair)
-    * Create an SSH key pair `ssh-keygen -t ed25519 -C "email@example.com"` (skip if you already have one)
-    * Add your public SSH key to your Gitlab profile under https://git.chalmers.se/-/user_settings/ssh_keys
-    * Make sure the email you use to commit is registered under https://git.chalmers.se/-/profile/emails
-  * Checkout the [Backend-Frontend](https://git.chalmers.se/courses/dit342/group-00-web) template `git clone git@git.chalmers.se:courses/dit342/group-00-web.git`
-* [Server Requirements](./server/README.md#Requirements)
-* [Client Requirements](./client/README.md#Requirements)
+- Server Requirements: see [server README](./server/README.md#Requirements)  
+- Client Requirements: see [client README](./client/README.md#Requirements)  
 
-## Getting started
+---
+
+## Getting Started
 
 ```bash
 # Clone repository
 git clone git@git.chalmers.se:courses/dit342/group-00-web.git
-
-# Change into the directory
 cd group-00-web
 
 # Setup backend
@@ -50,9 +54,6 @@ npm run dev
 # Setup frontend
 cd client && npm install
 npm run serve
-```
-
-> Check out the detailed instructions for [backend](./server/README.md) and [frontend](./client/README.md).
 
 ## Visual Studio Code (VSCode)
 
@@ -67,11 +68,13 @@ of their choice. This will help the user in viewing different museums in the cap
 necessary information related to the museum will also be displayed to the user. The user can select specific museums and add them to their wishlist after creating and logging in to their accounts. The user can update/view thier wishlist after logging in. The user can also leave reviews about any of the musems (which will be displayed to other users) and rate the website out of five stars.
 
 
-### Advanced features -  Intelligent Travel Planner
-### Summary: 
+### Advanced Features – Intelligent Travel Planner
+- Select museums to visit on a particular day.
+- Input user location; system calculates estimated travel time & distance.
+- Choose travel mode: walking, car, or bus.
+- Generate an optimized travel plan based on opening hours and traffic.
+- Save travel plans to user account.
 
-
-Currently in our system, we are displaying the map of Europe to the user. In this, all the countries are selectable and when the user selects the country, different art and historical museums are displayed to the user. In this list, the user can select the different museums and add them to their wishlist. The wishlist option is only accessible if the user has created an account and is logged in. Additionally, the user can also leave reviews on the website (rating it out of 5 stars) and leave reviews on any of the museums. These reviews will also be displayed to other users. 
 
 
 ### The advance feature workflow will be: 
@@ -96,11 +99,11 @@ A new section in the UI is shown to display the user’s saved travel plans.
 
 
 ### Pages
+- Map of Europe: clickable countries.
+- Country selection → choose art or historical museums.
+- Bookmark museums → added to wishlist (requires login).
+- Create/login account to view wishlist.
 
-- A map of Europe is displayed to the user where all the countries are clickable.
-- The user can click on a specific country and then are prompted to select either art museums or historical museums.
-- The user can also bookmark any museums that they want to visit which will then be added to the user's wishlist.
-- The user can create and/or login to their account to view their wishlist. 
 
 
 ### Entity-Relationship (ER) Diagram
