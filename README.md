@@ -110,7 +110,7 @@ A new section in the UI is shown to display the user’s saved travel plans.
 
 - Interactive Map of Europe: Developed the clickable map that allows users to select countries and explore art and historical museums.
 
-- Review System: Implemented functionality for users to leave reviews and ratings for museums, which are displayed to other users.
+- Review System: Implemented functionality for users to leave reviews and ratings for museums, which are displayed to other users. (backend and frontend)
 
 
 ### Entity-Relationship (ER) Diagram
