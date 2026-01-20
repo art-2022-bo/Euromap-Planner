@@ -20,6 +20,7 @@ GOOGLE_MAPS_API_KEY=YOUR_KEY_HERE
 | [client/README.md](client/README.md) | Frontend instructions | **READ ME carefully!** |
 | [docs/LOCAL_DEPLOYMENT.md](docs/LOCAL_DEPLOYMENT.md) | Local production deployment | Steps to deploy locally in production mode |
 
+This project was done in a group of 3 for the course web engineering.
 ---
 
 ## Requirements
@@ -103,7 +104,13 @@ A new section in the UI is shown to display the user’s saved travel plans.
 - Country selection → choose art or historical museums.
 - Bookmark museums → added to wishlist (requires login).
 - Create/login account to view wishlist.
+### My Contributions
 
+- Backend Development: Implemented and tested all API routes using Postman, set up development and production environments, and organized the project structure for maintainability.
+
+- Interactive Map of Europe: Developed the clickable map that allows users to select countries and explore art and historical museums.
+
+- Review System: Implemented functionality for users to leave reviews and ratings for museums, which are displayed to other users.
 
 
 ### Entity-Relationship (ER) Diagram
