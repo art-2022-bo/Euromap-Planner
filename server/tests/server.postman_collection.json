@@ -1,0 +1,1290 @@
+{
+	"info": {
+		"_postman_id": "2406b27b-fbe7-4cfb-9828-9870170a39c8",
+		"name": "My Collection",
+		"description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49863712",
+		"_collection_link": "https://gusmokhtar-9334659.postman.co/workspace/group-17-web-2025's-Workspace~6d6a7ec1-f440-4021-8c42-fd893ef23187/collection/49863712-2406b27b-fbe7-4cfb-9828-9870170a39c8?action=share&source=collection_link&creator=49863712"
+	},
+	"item": [
+		{
+			"name": "SignUp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Signup response has correct format\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.have.property('message');\r",
+							"    pm.expect(response.message).to.include('Created');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"Artemis1234\",\n    \"password\" : \"lalalalala12\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/signUp",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"signUp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login response has user data\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.have.property('message');\r",
+							"    pm.expect(response).to.have.property('user');\r",
+							"    pm.expect(response.user).to.have.property('id');\r",
+							"    pm.expect(response.user).to.have.property('username');\r",
+							"    \r",
+							"    // Save the username for other tests\r",
+							"    pm.collectionVariables.set(\"username\", response.user.username);\r",
+							"    \r",
+							"    // Check for session cookie\r",
+							"    const cookieHeader = pm.response.headers.get('Set-Cookie');\r",
+							"    if (cookieHeader) {\r",
+							"        console.log('Login successful, cookie set:', cookieHeader);\r",
+							"        console.log('No Set-Cookie header found in login response');\r",
+							"    }\r",
+							"    \r",
+							"    if (response.token) {\r",
+							"        pm.collectionVariables.set(\"token\", response.token);\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"Artemis1234\",\n    \"password\" : \"lalalalala12\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/logIn",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"logIn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostReviews",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Response is an array of created reviews\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(Array.isArray(response)).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"First review has all required fields\", function () {",
+							"    const response = pm.response.json();",
+							"    if (response.length > 0) {",
+							"        const review = response[0];",
+							"        pm.expect(review).to.have.property('personName');",
+							"        pm.expect(review).to.have.property('reviewType');",
+							"        pm.expect(review).to.have.property('_id');",
+							"        pm.expect(review).to.have.property('createdAt');",
+							"        ",
+							"        pm.collectionVariables.set(\"reviewId\", review._id);",
+							"    }",
+							"});",
+							"",
+							"pm.test(\"Review type-specific fields are correct\", function () {",
+							"    const response = pm.response.json();",
+							"    if (response.length > 0) {",
+							"        const review = response[0];",
+							"        if (review.reviewType === 'website') {",
+							"            pm.expect(review).to.have.property('websiteReview');",
+							"            pm.expect(review.websiteReview).to.be.within(1, 5);",
+							"        } else if (review.reviewType === 'museum') {",
+							"            pm.expect(review).to.have.property('museumReview');",
+							"            pm.expect(review.museumReview).to.be.a('string');",
+							"        }",
+							"    }",
+							"});",
+							"pm.test(\"Save review ID for later tests\", function () {",
+							"    const response = pm.response.json();",
+							"    if (response.length > 0 && response[0]._id) {",
+							"        pm.collectionVariables.set(\"reviewId\", response[0]._id);",
+							"        console.log(\"Saved reviewId:\", response[0]._id);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"personName\": \"tori\",\r\n    \"reviewType\": \"museum\",\r\n    \"museumReview\": \"Good\",\r\n    \"museumName\": \"Louvre Museum\",\r\n    \"museumId\": \"museum-123\",\r\n    \"city\": \"Paris\",\r\n    \"country\": \"France\"\r\n  },\r\n  {\r\n    \"personName\": \"Art\",\r\n    \"reviewType\": \"website\",\r\n    \"websiteReview\": 5\r\n  },\r\n  {\r\n    \"personName\": \"Alex\",\r\n    \"reviewType\": \"website\",\r\n    \"websiteReview\": 3\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/reviews",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"reviews"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "GetReviews",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							"pm.test(\"Response is an array\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(Array.isArray(response)).to.be.true;",
+							"});",
+							"pm.test(\"Each review has correct structure\", function () {",
+							"    const response = pm.response.json();",
+							"    if (response.length > 0) {",
+							"        response.forEach(review => {",
+							"            pm.expect(review).to.have.property('personName');",
+							"            pm.expect(review).to.have.property('reviewType');",
+							"            pm.expect(['museum', 'website']).to.include(review.reviewType);",
+							"        });",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/reviews",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"reviews"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateReviews",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"PUT request completed\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has valid structure\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    if (pm.response.code === 200) {\r",
+							"        pm.expect(response).to.have.property('personName');\r",
+							"        pm.expect(response).to.have.property('reviewType');\r",
+							"    } else if (pm.response.code === 404) {\r",
+							"        pm.expect(response).to.have.property('message');\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"personName\": \"Sanj\",\r\n  \"reviewType\": \"website\",\r\n  \"websiteReview\": 4,\r\n  \"museumReview\": \"Great website!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/reviews/{{reviewId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"reviews",
+						"{{reviewId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangeReviews",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"PATCH request completed\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has valid structure\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    if (pm.response.code === 200) {\r",
+							"        pm.expect(response).to.have.property('_id');\r",
+							"        pm.expect(response).to.have.property('websiteReview', 3);\r",
+							"    } else if (pm.response.code === 404) {\r",
+							"        pm.expect(response).to.have.property('message');\r",
+							"        pm.expect(response.message).to.include('not found');\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"websiteReview\": 3\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/reviews/{{reviewId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"reviews",
+						"{{reviewId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteReviewsById",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delete response has correct format\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"    pm.expect(response).to.have.property('message');\r",
+							"    pm.expect(response.message).to.include('deleted');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Delete message is informative\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.message).to.be.a('string');\r",
+							"    pm.expect(response.message.length).to.be.greaterThan(0);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/reviews/{{reviewId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"reviews",
+						"{{reviewId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteReviews",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delete all response has correct JSON structure\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.have.property('message');\r",
+							"    pm.expect(response.message).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Message indicates all reviews were deleted\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.message.toLowerCase()).to.include('deleted');\r",
+							"    pm.expect(response.message.toLowerCase()).to.include('all') || pm.expect(response.message.toLowerCase()).to.include('review');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has no unexpected fields\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    const allowedFields = ['message'];\r",
+							"    const responseFields = Object.keys(response);\r",
+							"    \r",
+							"    responseFields.forEach(field => {\r",
+							"        pm.expect(allowedFields).to.include(field);\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/reviews",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "WebsiteReviewRating",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Average rating response has correct structure\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"    pm.expect(response).to.have.property('average');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Average is a valid number\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.average).to.be.a('number');\r",
+							"    pm.expect(response.average).to.be.within(0, 5); \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Average calculation is reasonable\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    if (response.average > 0) {\r",
+							"        pm.expect(response.average).to.be.within(1, 5);\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/reviews/website/average-rating",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"reviews",
+						"website",
+						"average-rating"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetWishlist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Wishlist request completed\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has valid structure\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    if (pm.response.code === 200) {\r",
+							"        pm.expect(response).to.have.property('wishlist');\r",
+							"        pm.expect(response.wishlist).to.be.an('array');\r",
+							"    } else {\r",
+							"        pm.expect(response).to.have.property('message');\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/wishlists/{{username}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"wishlists",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostWishlist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Wishlist request completed\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has valid structure\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    if (pm.response.code === 200) {\r",
+							"        pm.expect(response).to.have.property('wishlist');\r",
+							"        pm.expect(response.wishlist).to.be.an('array');\r",
+							"    } else {\r",
+							"        pm.expect(response).to.have.property('message');\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"item\": {\n        \"name\": \"Test Museum\",\n        \"city\": \"Test City\",\n        \"country\": \"Test Country\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/wishlists/{{username}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"wishlists",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteWishlist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Wishlist request completed\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has valid structure\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    if (pm.response.code === 200) {\r",
+							"        pm.expect(response).to.have.property('wishlist');\r",
+							"        pm.expect(response.wishlist).to.be.an('array');\r",
+							"    } else {\r",
+							"        pm.expect(response).to.have.property('message');\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/wishlists/{{username}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"wishlists",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangePassword",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Password change request handled\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 400, 500]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has valid structure\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.have.property('message');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"Artemis123\",\n    \"password\" : \"lalalalala12\",\n    \"newPassword\" : \"asdfghjkl12\",\n    \"confirmNewPassword\" : \"asdfghjkl12\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/changePassword",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"changePassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MuseumData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Museum request handled\", function() {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has valid structure\", function() {\r",
+							"    const response = pm.response.json();\r",
+							"    if (pm.response.code === 200) {\r",
+							"        pm.expect(response).to.have.property('museums');\r",
+							"    } else if (pm.response.code === 404) {\r",
+							"        pm.expect(response).to.have.property('message');\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/museums/Paris",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"museums",
+						"Paris"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "current user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Current user response has correct structure\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.have.property('user');\r",
+							"    pm.expect(response.user).to.have.property('username');\r",
+							"    pm.expect(response.user).to.not.have.property('password');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/users/me",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoginSession",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/users/loginSessionTimeout/me",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"loginSessionTimeout",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Postloginsession",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// In Postloginsession test script  \r",
+							"pm.test(\"Login session endpoint handled\", function() {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has valid structure\", function() {\r",
+							"    const response = pm.response.json();\r",
+							"    if (pm.response.code === 200) {\r",
+							"        pm.expect(response).to.have.property('user');\r",
+							"    } else if (pm.response.code === 404) {\r",
+							"        pm.expect(response).to.be.an('object');\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/loginSessionTimeout/me",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"loginSessionTimeout",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete all wishlist",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/wishlists/{{username}}/all",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"wishlists",
+						"{{username}}",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTravelPlanner",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/travelPlannerLists/{{username}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"travelPlannerLists",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostTravelPlanner",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"item\": {\n    \"name\": \"Louvre Museum\",\n    \"city\": \"Paris\",\n    \"country\": \"France\",\n    \"lat\": 48.8606,\n    \"lng\": 2.3376\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/travelPlannerLists/{{username}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"travelPlannerLists",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteItemInTravelPlanner",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"item\": {\n    \"name\": \"Eiffel Tower\"\n  }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/api/travelPlannerLists/{{username}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"travelPlannerLists",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteAllTravelPlanner",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"item\": {\n    \"name\": \"Eiffel Tower\"\n  }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/api/travelPlannerLists/{{username}}/all",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"travelPlannerLists",
+						"{{username}}",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteAccount",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delete user response has correct structure\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains deletion confirmation\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response).to.have.property('message');\r",
+							"    pm.expect(response.message).to.be.a('string');\r",
+							"    pm.expect(response.message.toLowerCase()).to.include('deleted');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is clean and informative\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.message.length).to.be.greaterThan(0);\r",
+							"    pm.expect(response).to.not.have.property('password');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"Sanjana\",\n    \"password\" : \"lalalalala12\",\n    \"confirmPassword\" : \"lalalalala12\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/deleteUser",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"deleteUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const json = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Logout response has valid structure\", () => {\r",
+							"  pm.expect(json).to.have.property(\"message\");\r",
+							"  pm.expect(json.message.toLowerCase()).to.include(\"logout\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"Sanja\",\n    \"password\" : \"qwertyuiop12\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/logout",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateNewAccount",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"confirm\": true,\n  \"currentPassword\": \"asdfghjkl12\",\n  \"newUsername\": \"brandNewUser1\",\n  \"newPassword\": \"newPassword34\",\n  \"confirmNewPassword\": \"newPassword34\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/createNewAccount",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"createNewAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Optimize route",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/travelPlannerLists/optimize/{{username}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"travelPlannerLists",
+						"optimize",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update travel planner",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/travelPlannerLists/{{username}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"travelPlannerLists",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save travel planner",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/travelPlannerLists/{{username}}/save",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"travelPlannerLists",
+						"{{username}}",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "saved travel planner",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/travelPlannerLists/{{username}}/saved",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"travelPlannerLists",
+						"{{username}}",
+						"saved"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete saved travel planner",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/travelPlannerLists/{{username}}/saved",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"travelPlannerLists",
+						"{{username}}",
+						"saved"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": ""
+		},
+		{
+			"key": "reviewId\n",
+			"value": ""
+		},
+		{
+			"key": "reviewId",
+			"value": ""
+		}
+	]
+}

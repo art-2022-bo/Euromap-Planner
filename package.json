@@ -1,0 +1,21 @@
+{
+  "name": "backend-frontend",
+  "version": "0.1.0",
+  "description": "This collection package integrates the server and client for deployment.",
+  "main": "server/app.js",
+  "scripts": {
+    "postinstall": "npm install --prefix server && npm install --prefix client && npm run build --prefix client"
+  },
+  "engines": {
+    "npm": "11.x",
+    "node": "22.x"
+  },
+  "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.4.2",
+    "axios": "^1.13.2",
+    "bootstrap": "^5.3.8",
+    "bootstrap-vue-next": "^0.40.8",
+    "vue": "^3.5.25",
+    "vue-router": "^4.6.3"
+  }
+}
