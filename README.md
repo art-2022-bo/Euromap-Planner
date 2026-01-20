@@ -58,7 +58,7 @@ npm run serve
 ## Visual Studio Code (VSCode)
 
 Open the `server` and `client` in separate VSCode workspaces or open the combined [backend-frontend.code-workspace](./backend-frontend.code-workspace). Otherwise, workspace-specific settings don't work properly.
-
+```
 ## System Definition (MS0)
 
 ### Purpose
@@ -68,7 +68,7 @@ of their choice. This will help the user in viewing different museums in the cap
 necessary information related to the museum will also be displayed to the user. The user can select specific museums and add them to their wishlist after creating and logging in to their accounts. The user can update/view thier wishlist after logging in. The user can also leave reviews about any of the musems (which will be displayed to other users) and rate the website out of five stars.
 
 
-### Advanced Features – Intelligent Travel Planner
+### Advanced Features: Intelligent Travel Planner
 - Select museums to visit on a particular day.
 - Input user location; system calculates estimated travel time & distance.
 - Choose travel mode: walking, car, or bus.
